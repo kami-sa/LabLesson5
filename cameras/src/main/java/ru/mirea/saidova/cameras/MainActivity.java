@@ -1,5 +1,4 @@
-package ru.mirea.saidova.camera;
-
+package ru.mirea.saidova.cameras;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
@@ -17,6 +16,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
+
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -30,7 +30,6 @@ public class MainActivity extends AppCompatActivity {
     FileOutputStream fileoutputstream;
     ByteArrayOutputStream bytearrayoutputstream;
     private boolean isWork = false;
-    //Camera camera;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,28 +53,23 @@ public class MainActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == CAMERA_REQUEST && resultCode == RESULT_OK) {
 // извлекаем изображение
-            Bitmap thumbnailBitmap = (Bitmap) data.getExtras().get("data");
-            thumbnailBitmap.compress(Bitmap.CompressFormat.PNG, 60, bytearrayoutputstream);
+            Bitmap bitmap = (Bitmap) data.getExtras().get("data");
+            bitmap.compress(Bitmap.CompressFormat.PNG, 60, bytearrayoutputstream);
 
-            imageView.setImageBitmap(thumbnailBitmap);
-            file = new File( Environment.getExternalStorageDirectory() + "/SampleImage.png");
+            imageView.setImageBitmap(bitmap);
             try
 
             {
-                file.createNewFile();
-                fileoutputstream = new FileOutputStream(file);
+                fileoutputstream = new FileOutputStream(Environment.getExternalStorageDirectory() + "/SampleImage.png");
                 fileoutputstream.write(bytearrayoutputstream.toByteArray());
                 fileoutputstream.close();
                 Log.d(TAG, file.getAbsolutePath());
             }
-
             catch (Exception e)
-
             {
-
                 e.printStackTrace();
-
             }
+            Toast.makeText(MainActivity.this, "Сохранили картинку. Ищи во внутренней памяти.", Toast.LENGTH_LONG).show();
         }
     }
 

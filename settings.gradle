@@ -1,2 +1,2 @@
-include ':app', ':accelerometer', ':camera'
+include ':app', ':accelerometer', ':cameras'
 rootProject.name='LabLesson5'
